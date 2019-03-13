@@ -97,7 +97,7 @@ foreach lib : cxx_sublibs
   endforeach
 
   install_headers(cxx_header_src,
-    subdir: dir_package_include
+    install_dir: dir_package_include
   )
 
   pkgconfig.generate(

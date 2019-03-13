@@ -50,5 +50,5 @@ eina_cxx = declare_dependency(
 )
 
 install_headers(eina_cxx_header_src,
-  subdir: dir_package_include
+  install_dir: dir_package_include
 )
