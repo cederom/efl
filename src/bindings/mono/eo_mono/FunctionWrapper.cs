@@ -3,8 +3,17 @@ using System.Runtime.InteropServices;
 
 namespace Efl { namespace Eo {
 
+///<summary>Class to load functions pointers from a native module.
+///
+///This class has a platform-dependent implementation on whether it
+///is compiled for Windows (using LoadLibrary/GetProcAddress) or Unix
+///(dlopen/dlsym).</summary>
 public partial class FunctionInterop
 {
+    ///<summary>Loads a function pointer from the given module.</summary>
+    ///<param name="moduleName">The name of the module containing the function.</param>
+    ///<param name="functionName">The name of the function to search for.</param>
+    ///<returns>A function pointer that can be used with delegates.</returns>
     public static IntPtr LoadFunctionPointer(string moduleName, string functionName)
     {
         NativeModule module = new NativeModule(moduleName);
@@ -13,6 +22,10 @@ public partial class FunctionInterop
         Eina.Log.Debug($"searching {module.Module} for{functionName}, result {s}");
         return s;
     }
+
+    ///<summary>Loads a function pointer from the default module.</summary>
+    ///<param name="functionName">The name of the function to search for.</param>
+    ///<returns>A function pointer that can be used with delegates.</returns>
     public static IntPtr LoadFunctionPointer(string functionName)
     {
         Eina.Log.Debug($"searching {null} for {functionName}");
@@ -21,8 +34,14 @@ public partial class FunctionInterop
         return s;
     }
 }
-        
-public class FunctionWrapper<T>
+
+///<summary>Wraps a native function in a portable manner.
+///
+///This is intended as a workaround DllImport limitations when switching between mono and dotnet.
+///
+///The parameter T must be a delegate.
+///</summary>
+public class FunctionWrapper<T> // NOTE: When supporting C# >=7.3, add a where T: System.Delegate?
 {
     private Lazy<FunctionLoadResult<T>> loadResult;
 #pragma warning disable 0414
@@ -42,12 +61,18 @@ public class FunctionWrapper<T>
                 return new FunctionLoadResult<T>(Marshal.GetDelegateForFunctionPointer<T>(funcptr));
         }
     }
-    
+
+    ///<summary>Creates a wrapper for the given function of the given module.</summary>
+    ///<param name="moduleName">The name of the module containing the function.</param>
+    ///<param name="functionName">The name of the function to search for.</param>
     public FunctionWrapper(string moduleName, string functionName)
         : this (new NativeModule(moduleName), functionName)
     {
     }
-    
+
+    ///<summary>Creates a wrapper for the given function of the given module.</summary>
+    ///<param name="moduleName">The module wrapper containing the function.</param>
+    ///<param name="functionName">The name of the function to search for.</param>
     public FunctionWrapper(NativeModule module, string functionName)
     {
         this.module = module;
@@ -58,6 +83,8 @@ public class FunctionWrapper<T>
             });
     }
 
+    ///<summary>Retrieves the result of function load.</summary>
+    ///<returns>The load result.</returns>
     public FunctionLoadResult<T> Value
     {
         get
@@ -67,8 +94,9 @@ public class FunctionWrapper<T>
     }
 }
 
+///<summary>The outcome of the function load process.</summary>
 public enum FunctionLoadResultKind { Success, LibraryNotFound, FunctionNotFound }
-    
+
 public class FunctionLoadResult<T>
 {
     public FunctionLoadResultKind Kind;
