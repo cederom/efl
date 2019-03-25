@@ -56,7 +56,7 @@ struct native_function_definition_generator
     if(!as_generator
        ("\n\n" << scope_tab
         << eolian_mono::marshall_annotation(true)
-        << " public delegate "
+        << scope_tab << "public delegate "
         << eolian_mono::marshall_type(true)
         << " "
         << string << "_api_delegate(" << (f.is_static ? "" : "System.IntPtr obj")
@@ -70,9 +70,8 @@ struct native_function_definition_generator
       return false;
 
     if(!as_generator
-       (scope_tab
-        << " public static Efl.Eo.FunctionWrapper<" << string << "_api_delegate> " << string << "_ptr = new Efl.Eo.FunctionWrapper<"
-        << string << "_api_delegate>(_Module, \"" << string << "\");\n")
+       (scope_tab << "public static Efl.Eo.FunctionWrapper<" << string << "_api_delegate> " << string << "_ptr = new Efl.Eo.FunctionWrapper<"
+          << string << "_api_delegate>(Module, \"" << string << "\");\n")
        .generate(sink, std::make_tuple(f.c_name, f.c_name, f.c_name, f.c_name), context))
       return false;
 
