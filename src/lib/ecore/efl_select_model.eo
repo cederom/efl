@@ -1,6 +1,29 @@
 class @beta Efl.Select_Model extends Efl.Boolean_Model
 {
    [[Efl select model class]]
+   methods {
+      selected_get {
+         [[Get an iterator of all the selected child of this model.
+         ]]
+         return: iterator<ptr(uint64)>; [[The iterator that is valid until any change is made on the model.]]
+      }
+      unselected_get {
+         [[Get an iterator of all the child of this model that are not selected.
+         ]]
+         return: iterator<ptr(uint64)>; [[The iterator that is valid until any change is made on the model.]]
+      }
+      @property exclusive {
+         [[Define if we support only one exclusive selection at a time.
+
+           This is also know has a multi select mode.
+         ]]
+         set { [[Switch to an exclusive mode when set to $true.]] }
+         get { [[Current state of the exclusive mode.]] }
+         values {
+            enable: bool; [[$true will enable the exclusive mode.]]
+         }
+      }
+   }
    implements {
       Efl.Object.constructor;
       Efl.Model.property { get; set; }

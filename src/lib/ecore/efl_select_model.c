@@ -383,4 +383,28 @@ _efl_select_model_efl_model_property_get(const Eo *obj, Efl_Select_Model_Data *p
    return efl_model_property_get(efl_super(obj, EFL_SELECT_MODEL_CLASS), property);
 }
 
+static void
+_efl_select_model_exclusive_set(Eo *obj EINA_UNUSED, Efl_Select_Model_Data *pd, Eina_Bool enable)
+{
+   pd->exclusive = enable;
+}
+
+static Eina_Bool
+_efl_select_model_exclusive_get(const Eo *obj EINA_UNUSED, Efl_Select_Model_Data *pd)
+{
+   return pd->exclusive;
+}
+
+static Eina_Iterator *
+_efl_select_model_selected_get(Eo *obj, Efl_Select_Model_Data *pd EINA_UNUSED)
+{
+   return efl_boolean_model_boolean_iterator_get(obj, "selected", EINA_TRUE);
+}
+
+static Eina_Iterator *
+_efl_select_model_unselected_get(Eo *obj, Efl_Select_Model_Data *pd EINA_UNUSED)
+{
+   return efl_boolean_model_boolean_iterator_get(obj, "selected", EINA_FALSE);
+}
+
 #include "efl_select_model.eo.c"
