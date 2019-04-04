@@ -8,9 +8,8 @@
 
 #include "ecore_private.h"
 
+#include "efl_composite_model_private.h"
 #include "efl_composite_model.eo.h"
-
-#define _CHILD_INDEX "child.index"
 
 typedef struct _Efl_Composite_Model_Data Efl_Composite_Model_Data;
 
