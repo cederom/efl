@@ -13,7 +13,9 @@ foreach emotion_loader : emotion_loaders
 
   if get_option('emotion-loaders-disabler').contains(emotion_loader) == false
     subdir(emotion_loader)
-    module_files += join_paths(mod_install_dir, 'lib'+emotion_loader+'.'+sys_mod_extension)
-    config_h.set('EMOTION_BUILD_'+emotion_loader.to_upper(), 1)
+    if emotion_loader == 'generic' and sys_windows == false
+      module_files += join_paths(mod_install_dir, 'lib'+emotion_loader+'.'+sys_mod_extension)
+      config_h.set('EMOTION_BUILD_'+emotion_loader.to_upper(), 1)
+    endif
   endif
 endforeach
