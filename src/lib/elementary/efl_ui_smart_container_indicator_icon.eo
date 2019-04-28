@@ -1,0 +1,7 @@
+class @beta Efl.Ui.Smart_Container_Indicator_Icon extends Efl.Ui.Smart_Container_Indicator {
+  implements {
+      Efl.Ui.Smart_Container_Indicator.smart_container {set;}
+      Efl.Ui.Smart_Container_Indicator.content_update;
+      Efl.Ui.Smart_Container_Indicator.position_update;
+  }
+}

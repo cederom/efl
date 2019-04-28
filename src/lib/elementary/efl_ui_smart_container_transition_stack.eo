@@ -1,0 +1,9 @@
+class @beta Efl.Ui.Smart_Container_Transition_Stack extends Efl.Ui.Smart_Container_Transition
+{
+   implements {
+      Efl.Ui.Smart_Container_Transition.smart_container {set;}
+      Efl.Ui.Smart_Container_Transition.content_update;
+      Efl.Ui.Smart_Container_Transition.request_switch;
+      Efl.Ui.Smart_Container_Transition.page_size {set;}
+   }
+}

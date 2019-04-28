@@ -230,6 +230,18 @@ EAPI void efl_ui_focus_relation_free(Efl_Ui_Focus_Relations *rel);
 # include <efl_ui_panes_eo.h>
 # include <efl_ui_panes_part.eo.h>
 
+#define _EFL_UI_SMART_CONTAINER_TRANSITION_EO_CLASS_TYPE
+typedef Eo Efl_Ui_Smart_Container_Transition;
+#define _EFL_UI_SMART_CONTAINER_INDICATOR_EO_CLASS_TYPE
+typedef Eo Efl_Ui_Smart_Container_Indicator;
+
+# include <efl_ui_smart_container.eo.h>
+# include <efl_ui_smart_container_transition.eo.h>
+# include <efl_ui_smart_container_indicator.eo.h>
+# include <efl_ui_smart_container_indicator_icon.eo.h>
+# include <efl_ui_smart_container_transition_scroll.eo.h>
+# include <efl_ui_smart_container_transition_stack.eo.h>
+
 # include <efl_ui_navigation_bar.eo.h>
 # include <efl_ui_navigation_bar_part.eo.h>
 # include <efl_ui_navigation_bar_part_back_button.eo.h>

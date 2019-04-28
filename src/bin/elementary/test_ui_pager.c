@@ -122,17 +122,17 @@ static Eo *page_add(Page_Type p, Eo *parent)
 static void prev_btn_cb(void *data, const Efl_Event *ev EINA_UNUSED)
 {
    Eo *pager = data;
-   int curr_page = efl_ui_pager_current_page_get(pager);
+   int curr_page = efl_ui_smart_container_current_page_get(pager);
 
-   efl_ui_pager_current_page_set(pager, (curr_page - 1));
+   efl_ui_smart_container_current_page_set(pager, curr_page -1);
 }
 
 static void next_btn_cb(void *data, const Efl_Event *ev EINA_UNUSED)
 {
    Eo *pager = data;
-   int curr_page = efl_ui_pager_current_page_get(pager);
+   int curr_page = efl_ui_smart_container_current_page_get(pager);
 
-   efl_ui_pager_current_page_set(pager, (curr_page + 1));
+   efl_ui_smart_container_current_page_set(pager, curr_page +1);
 }
 
 static void back_btn_cb(void *data, const Efl_Event *ev EINA_UNUSED)
@@ -702,7 +702,7 @@ void test_ui_pager(void *data EINA_UNUSED,
 
    win = efl_add(EFL_UI_WIN_CLASS, efl_main_loop_get(),
                  efl_ui_win_type_set(efl_added, EFL_UI_WIN_TYPE_BASIC),
-                 efl_text_set(efl_added, "Pager"),
+                 efl_text_set(efl_added, "Pager Smart"),
                  efl_ui_win_autodel_set(efl_added, EINA_TRUE));
 
    panes = efl_add(EFL_UI_PANES_CLASS, win,
@@ -728,9 +728,107 @@ void test_ui_pager(void *data EINA_UNUSED,
                     efl_file_load(efl_added),
                     efl_content_set(efl_part(panes, "second"), efl_added));
 
-   pager = efl_add(EFL_UI_PAGER_CLASS, layout,
+   pager = efl_add(EFL_UI_SMART_CONTAINER_CLASS, layout,
                    efl_content_set(efl_part(layout, "pager"), efl_added),
-                   efl_ui_pager_page_size_set(efl_added, EINA_SIZE2D(200, 300)));
+                   efl_ui_smart_container_page_size_set(efl_added, EINA_SIZE2D(200, 300)));
+
+   efl_ui_smart_container_transition_set(pager, efl_new(EFL_UI_SMART_CONTAINER_TRANSITION_SCROLL_CLASS));
+   efl_ui_smart_container_indicator_set(pager, efl_new(EFL_UI_SMART_CONTAINER_INDICATOR_ICON_CLASS));
+
+   efl_add(EFL_UI_BUTTON_CLASS, layout,
+           efl_text_set(efl_added, "Prev"),
+           efl_event_callback_add(efl_added,
+                                  EFL_UI_EVENT_CLICKED, prev_btn_cb, pager),
+           efl_content_set(efl_part(layout, "prev_btn"), efl_added));
+
+   efl_add(EFL_UI_BUTTON_CLASS, layout,
+           efl_text_set(efl_added, "Next"),
+           efl_event_callback_add(efl_added,
+                                  EFL_UI_EVENT_CLICKED, next_btn_cb, pager),
+           efl_content_set(efl_part(layout, "next_btn"), efl_added));
+
+   params = calloc(1, sizeof(Params));
+   if (!params) return;
+
+   params->navi = navi;
+   params->pager = pager;
+   params->indicator = NULL;
+   params->w = 200;
+   params->h = 300;
+   params->wfill = EINA_FALSE;
+   params->hfill = EINA_FALSE;
+
+   elm_list_item_append(list, "Page Size", NULL, NULL, page_size_cb, params);
+   elm_list_item_append(list, "Pack / Unpack", NULL, NULL, pack_cb, params);
+   elm_list_item_append(list, "Current Page", NULL, NULL, current_page_cb, params);
+   elm_list_item_append(list, "Indicator", NULL, NULL, indicator_cb, params);
+   elm_list_go(list);
+
+   efl_event_callback_add(list, EFL_EVENT_DEL, list_del_cb, params);
+
+   for (i = 0; i < PAGE_NUM; i++) {
+      switch (i % 3) {
+         case 0:
+            page = page_add(LAYOUT, pager);
+            break;
+         case 1:
+            page = page_add(LIST, pager);
+            break;
+         case 2:
+            page = page_add(BUTTON, pager);
+            break;
+         default:
+            page = page_add(LAYOUT, pager);
+            break;
+      }
+      efl_pack_end(pager, page);
+   }
+
+   efl_gfx_entity_size_set(win, EINA_SIZE2D(580, 320));
+}
+
+void test_ui_pager_stack(void *data EINA_UNUSED,
+                   Evas_Object *obj EINA_UNUSED,
+                   void *event_info EINA_UNUSED)
+{
+   Eo *win, *panes, *navi, *list, *layout, *pager, *page;
+   Params *params = NULL;
+   char buf[PATH_MAX];
+   int i;
+
+   win = efl_add(EFL_UI_WIN_CLASS, efl_main_loop_get(),
+                 efl_ui_win_type_set(efl_added, EFL_UI_WIN_TYPE_BASIC),
+                 efl_text_set(efl_added, "Pager Smart Stack"),
+                 efl_ui_win_autodel_set(efl_added, EINA_TRUE));
+
+   panes = efl_add(EFL_UI_PANES_CLASS, win,
+                   efl_gfx_hint_weight_set(efl_added, 1, 1),
+                   efl_ui_panes_split_ratio_set(efl_added, 0.3),
+                   efl_content_set(win, efl_added));
+
+   navi = elm_naviframe_add(panes);
+   evas_object_show(navi);
+   efl_content_set(efl_part(panes, "first"), navi);
+
+   list = elm_list_add(navi);
+   elm_list_horizontal_set(list, EINA_FALSE);
+   elm_list_select_mode_set(list, ELM_OBJECT_SELECT_MODE_ALWAYS);
+   elm_naviframe_item_push(navi, "Properties", NULL, NULL, list, NULL);
+   evas_object_show(list);
+
+   snprintf(buf, sizeof(buf), "%s/objects/test_pager.edj",
+            elm_app_data_dir_get());
+   layout = efl_add(EFL_UI_LAYOUT_CLASS, panes,
+                    efl_file_set(efl_added, buf),
+                    efl_file_key_set(efl_added, "pager"),
+                    efl_file_load(efl_added),
+                    efl_content_set(efl_part(panes, "second"), efl_added));
+
+   pager = efl_add(EFL_UI_SMART_CONTAINER_CLASS, layout,
+                   efl_content_set(efl_part(layout, "pager"), efl_added),
+                   efl_ui_smart_container_page_size_set(efl_added, EINA_SIZE2D(-1, -1)));
+
+   efl_ui_smart_container_transition_set(pager, efl_new(EFL_UI_SMART_CONTAINER_TRANSITION_STACK_CLASS));
 
    efl_add(EFL_UI_BUTTON_CLASS, layout,
            efl_text_set(efl_added, "Prev"),

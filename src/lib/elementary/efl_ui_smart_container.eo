@@ -1,0 +1,52 @@
+class @beta Efl.Ui.Smart_Container extends Efl.Ui.Layout_Base implements Efl.Pack_Linear
+{
+   [[ The smart container widget can be used to display the added content in some animated way. The details of the animation and way of displaying depends on the transition object.
+      The size of the displayed content can be controlled via $page_size. The content with the main attraction can be setted with $current_page.
+
+      Without a transition object this widget will just display the content with the id set with $current_page. On page changes,
+   ]]
+   methods {
+      @property transition {
+        [[The transition object which defines the animation and exact position of the content]]
+        values {
+          transition : Efl.Ui.Smart_Container_Transition @owned;
+        }
+      }
+      @property indicator {
+        [[A indicator object which can be used to display the state and position of the content in this widget]]
+        values {
+          indicator : Efl.Ui.Smart_Container_Indicator @owned;
+        }
+      }
+      @property current_page {
+         [[Selects which is the maincontent to display by this widget. The exact positioning depends on the $transition object]]
+         values {
+            index: int;
+         }
+      }
+      @property page_size {
+         [[The size that is give to each content when displayed]]
+         values {
+            size: Eina.Size2D;
+         }
+      }
+   }
+   implements {
+      Efl.Object.constructor;
+      Efl.Object.invalidate;
+      Efl.Container.content_count;
+      Efl.Container.content_iterate;
+      Efl.Pack.pack_clear;
+      Efl.Pack.unpack_all;
+      Efl.Pack.unpack;
+      Efl.Pack.pack;
+      Efl.Pack_Linear.pack_begin;
+      Efl.Pack_Linear.pack_end;
+      Efl.Pack_Linear.pack_before;
+      Efl.Pack_Linear.pack_after;
+      Efl.Pack_Linear.pack_at;
+      Efl.Pack_Linear.pack_content_get;
+      Efl.Pack_Linear.pack_index_get;
+      Efl.Pack_Linear.pack_unpack_at;
+   }
+}

@@ -1,0 +1,42 @@
+abstract @beta Efl.Ui.Smart_Container_Transition extends Efl.Object {
+  [[Transition object which is used by smart_container]]
+  methods {
+    @property smart_container @pure_virtual {
+      [[Initial call to flush the required objects of the smart container to the transition object]]
+      set {
+
+      }
+      values {
+        smart_container : Efl.Ui.Smart_Container;
+        group : Efl.Canvas.Group;
+      }
+    }
+    content_update @pure_virtual  {
+      [[content has been updated. At position $index $subobj is now inserted or removed]]
+      params {
+        subobj : Efl.Gfx.Entity;
+        index : int;
+        deletion : bool;
+      }
+    }
+    request_switch @pure_virtual  {
+      [[Switch from one side to another, if there has been no side before, from is -1]]
+      params {
+        from : int;
+        to : int;
+      }
+    }
+    @property page_size @pure_virtual  {
+      [[Will be called whenever the page size changes]]
+      set {
+
+      }
+      values {
+        size : Eina.Size2D; [[The size of the page, real coordiates at any time]]
+      }
+    }
+  }
+  events {
+    pos_update : double; [[The absolut position where the animation currently is. so if there is a animation from 2 to 3 the event will go from 2.0 to 3.0]]
+  }
+}

@@ -1,0 +1,36 @@
+abstract @beta Efl.Ui.Smart_Container_Indicator extends Efl.Object {
+  [[Indicator object that is used by @Efl.Ui.Smart_Container]]
+  methods {
+    @property smart_container @pure_virtual {
+      [[Initial call to flush the required objects of the smart container to the transition object
+
+        This call can be used to setup the indicator part of $smart_container.
+      ]]
+      set {
+
+      }
+      values {
+        smart_container : Efl.Ui.Smart_Container;
+      }
+    }
+    content_update @pure_virtual  {
+      [[Content has been updated. At position $index $subobj is now inserted or removed]]
+      params {
+        subobj : Efl.Gfx.Entity;
+        index : int;
+        deletion : bool;
+      }
+    }
+    position_update @pure_virtual {
+      [[The position between the content has been changed.
+
+        The position is absolut and ranges from [-1,x + 1] where x is the number of contents in the smart_container.
+
+        Values between two actaul positions must be expected as this is the way the animation of the transition object populates to the indicator
+      ]]
+      params {
+        position : double; [[The position the transition object is currently in]]
+      }
+    }
+  }
+}

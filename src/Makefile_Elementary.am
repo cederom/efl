@@ -119,6 +119,12 @@ elm_public_eolian_files = \
 	lib/elementary/efl_ui_dnd_container.eo \
 	lib/elementary/efl_ui_focus_manager_window_root.eo \
 	lib/elementary/efl_ui_pager.eo \
+	lib/elementary/efl_ui_smart_container.eo \
+	lib/elementary/efl_ui_smart_container_transition.eo \
+	lib/elementary/efl_ui_smart_container_transition_scroll.eo \
+	lib/elementary/efl_ui_smart_container_transition_stack.eo \
+	lib/elementary/efl_ui_smart_container_indicator.eo \
+	lib/elementary/efl_ui_smart_container_indicator_icon.eo \
 	lib/elementary/efl_page_transition.eo \
 	lib/elementary/efl_page_transition_scroll.eo \
 	lib/elementary/efl_page_indicator.eo \
@@ -1194,6 +1200,12 @@ lib_elementary_libelementary_la_SOURCES = \
 	static_libs/buildsystem/buildsystem.h \
 	static_libs/buildsystem/buildsystem_autotools.c \
 	lib/elementary/efl_ui_pager.c \
+	lib/elementary/efl_ui_smart_container.c \
+	lib/elementary/efl_ui_smart_container_transition.c \
+	lib/elementary/efl_ui_smart_container_transition_scroll.c \
+	lib/elementary/efl_ui_smart_container_transition_stack.c \
+	lib/elementary/efl_ui_smart_container_indicator.c \
+	lib/elementary/efl_ui_smart_container_indicator_icon.c \
 	lib/elementary/efl_page_transition.c \
 	lib/elementary/efl_page_transition_scroll.c \
 	lib/elementary/efl_page_indicator.c \
